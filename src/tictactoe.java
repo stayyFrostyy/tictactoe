@@ -44,6 +44,56 @@ public class tictactoe extends JPanel {
         return(placeClicked.getText().equals("-"));
     }
 
+    public boolean checkRows() {
+        int i = 0;
+        for (int j = 0; j < 3; j++) {
+            if (places[i].getText().equals(places[i+1].getText()) && places[i+1].getText().equals(places[i+2].getText()) && places[i].getText().charAt(0) != '-') {
+                return true;
+            }
+            i = i + 3;
+        }
+        return false;
+    }
+
+    public boolean checkCols() {
+        int i = 0;
+        for (int j = 0; j < 3; j++) {
+            if (places[i].getText().equals(places[i+3].getText()) && places[i+3].getText().equals(places[i+6].getText()) && places[i].getText().charAt(0) != '-') {
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
+
+    public boolean checkDiags() {
+        if (places[0].getText().equals(places[4].getText()) && places[4].getText().equals(places[8].getText()) && places[0].getText().charAt(0) != '-') {
+            return true;
+        } else if (places[2].getText().equals(places[4].getText()) && places[4].getText().equals(places[6].getText()) && places[0].getText().charAt(0) != '-') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkDraw() {
+        boolean full = true;
+        for (int i = 0; i < 9; i++) {
+            if (places[i].getText().equals("-")) {
+                full = false;
+            }
+        }
+        return full;
+    }
+
+    public boolean checkWinner() {
+        return (checkRows() || checkCols() || checkDiags());
+    }
+
+    public void displayWinner() {
+
+    }
+
     public static void main(String[] args) {
         JFrame game = new JFrame();
         game.setTitle("Tic-Tac-Toe");
