@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class tictactoe extends JPanel {
     char player = 'X';
@@ -18,22 +16,20 @@ public class tictactoe extends JPanel {
             places[i].setText("-");
             places[i].setFont(new Font("Arial", Font.BOLD, 22));
             places[i].setBackground(Color.white);
-            places[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JButton placeClicked = (JButton) e.getSource();
+            places[i].addActionListener(e -> {
+                JButton placeClicked = (JButton) e.getSource();
 
-                    if (isPlaceValid(placeClicked)) {
-                        if (player == 'X') {
-                            placeClicked.setText(String.valueOf(player));
-                            placeClicked.setBackground(Color.YELLOW);
-                            player = 'O';
-                        } else if (player == 'O') {
-                            placeClicked.setText(String.valueOf(player));
-                            placeClicked.setBackground(Color.ORANGE);
-                            player = 'X';
-                        }
+                if (isPlaceValid(placeClicked)) {
+                    if (player == 'X') {
+                        placeClicked.setText(String.valueOf(player));
+                        placeClicked.setBackground(Color.YELLOW);
+                        player = 'O';
+                    } else {
+                        placeClicked.setText(String.valueOf(player));
+                        placeClicked.setBackground(Color.ORANGE);
+                        player = 'X';
                     }
+                    displayWinner();
                 }
             });
             add(places[i]);
@@ -69,17 +65,13 @@ public class tictactoe extends JPanel {
     public boolean checkDiags() {
         if (places[0].getText().equals(places[4].getText()) && places[4].getText().equals(places[8].getText()) && places[0].getText().charAt(0) != '-') {
             return true;
-        } else if (places[2].getText().equals(places[4].getText()) && places[4].getText().equals(places[6].getText()) && places[0].getText().charAt(0) != '-') {
-            return true;
-        } else {
-            return false;
-        }
+        } else return places[2].getText().equals(places[4].getText()) && places[4].getText().equals(places[6].getText()) && places[2].getText().charAt(0) != '-';
     }
 
     public boolean checkDraw() {
         boolean full = true;
         for (int i = 0; i < 9; i++) {
-            if (places[i].getText().equals("-")) {
+            if (places[i].getText().charAt(0) == '-') {
                 full = false;
             }
         }
@@ -92,6 +84,41 @@ public class tictactoe extends JPanel {
 
     public void displayWinner() {
 
+
+        if (checkWinner()) {
+            if (player == 'X') {
+                player = 'O';
+            } else {
+                player = 'X';
+            }
+
+
+            JOptionPane gameOver = new JOptionPane();
+            int result = JOptionPane.showConfirmDialog(gameOver, "Game Over! " + player +  " Wins. Do you want to play again? ", "Game Over", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                resetGame();
+            } else {
+                System.exit(0);
+            }
+        }
+        else if(checkDraw()) {
+            JOptionPane gameOver = new JOptionPane();
+            int result = JOptionPane.showConfirmDialog(gameOver, "Game Over! It's a tie! Do you want to play again? ", "Game Over", JOptionPane.YES_NO_OPTION);
+
+            if (result == JOptionPane.YES_OPTION) {
+                resetGame();
+            } else {
+                System.exit(0);
+            }
+        }
+    }
+
+    public void resetGame() {
+        for (int i = 0; i < 9; i++) {
+            places[i].setText("-");
+            places[i].setBackground(Color.WHITE);
+        }
     }
 
     public static void main(String[] args) {
