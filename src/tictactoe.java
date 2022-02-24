@@ -23,20 +23,25 @@ public class tictactoe extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     JButton placeClicked = (JButton) e.getSource();
 
-                    if (player == 'X') {
-                        placeClicked.setText(String.valueOf(player));
-                        placeClicked.setBackground(Color.YELLOW);
-                        player = 'O';
-                    }
-                    else if (player == 'O') {
-                        placeClicked.setText(String.valueOf(player));
-                        placeClicked.setBackground(Color.ORANGE);
-                        player = 'X';
+                    if (isPlaceValid(placeClicked)) {
+                        if (player == 'X') {
+                            placeClicked.setText(String.valueOf(player));
+                            placeClicked.setBackground(Color.YELLOW);
+                            player = 'O';
+                        } else if (player == 'O') {
+                            placeClicked.setText(String.valueOf(player));
+                            placeClicked.setBackground(Color.ORANGE);
+                            player = 'X';
+                        }
                     }
                 }
             });
             add(places[i]);
         }
+    }
+
+    public boolean isPlaceValid(JButton placeClicked) {
+        return(placeClicked.getText().equals("-"));
     }
 
     public static void main(String[] args) {
